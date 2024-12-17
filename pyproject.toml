@@ -11,7 +11,7 @@ dependencies = [
     "pydantic>=2.6.4",
     "sphinx>=8.1.3",
     "sphinx-rtd-theme>=3.0.2",
-    "vapory>=0.1.2",
+    "vapory@git+https://github.com/arnaudsomville/vapory.git@master",
     "confz>=2.0.1",
 ]
 readme = "README.md"

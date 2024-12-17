@@ -5,7 +5,7 @@
 groups = ["default", "dev", "doc", "test"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:2d2915aeda00b00e1ac9a374682af85a630082a1a572b7a0a142440c8eabd9b9"
+content_hash = "sha256:78421d591ef6a1b39afb3393cc607d59a3ddf70c4b59981dd9ebd9d26f425d82"
 
 [[metadata.targets]]
 requires_python = ">=3.11"
@@ -1295,12 +1295,11 @@ files = [
 [[package]]
 name = "vapory"
 version = "0.1.2"
+git = "https://github.com/arnaudsomville/vapory.git"
+ref = "master"
+revision = "333960e7631ceb3f40c0f400f51fc13672810f67"
 summary = "3D rendering with Python and POV-Ray"
 groups = ["default"]
-files = [
-    {file = "Vapory-0.1.2-py3-none-any.whl", hash = "sha256:58e4c09f6ab689e812cdf57e5a46056c8fb466af6d95395e9ffc565ac17806c5"},
-    {file = "Vapory-0.1.2.tar.gz", hash = "sha256:e0213caaac5cbb1d336ef7455a18e7ffcc8b864093040958ef45bddac8204231"},
-]
 
 [[package]]
 name = "virtualenv"
