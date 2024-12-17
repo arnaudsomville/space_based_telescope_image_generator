@@ -1297,7 +1297,7 @@ name = "vapory"
 version = "0.1.2"
 git = "https://github.com/arnaudsomville/vapory.git"
 ref = "master"
-revision = "333960e7631ceb3f40c0f400f51fc13672810f67"
+revision = "d279cf1101d1a084478583ec54d066215b7c96a4"
 summary = "3D rendering with Python and POV-Ray"
 groups = ["default"]
 
