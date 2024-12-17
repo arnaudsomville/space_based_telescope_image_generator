@@ -1,14 +1,22 @@
 """Definition of a really primitive Cubesat."""
 
-from vapory import Texture, Pigment, Finish, Box, Union, POVRayElement
+from vapory import Texture, Pigment, Finish, Box, Union
+
+from space_based_telescope_image_generator.objects.target_object import TargetObject
 
 
-class PrimitiveCubesat(POVRayElement):
+class PrimitiveCubesat(TargetObject):
     """
     Représente un CubeSat avec des panneaux solaires, des faces en aluminium et des faces dorées.
     """
 
-    def __init__(self, position: list[float], rotation: list[float], size: float = 0.0001, thickness: float = 0.00001):
+    def __init__(
+            self,
+            position: list[float], 
+            rotation: list[float], 
+            size: float = 0.0001, 
+            thickness: float = 0.00001
+        )->None:
         """
         Constructeur de la classe PrimitiveCubesat.
 
@@ -17,8 +25,7 @@ class PrimitiveCubesat(POVRayElement):
         :param size: Taille du CubeSat (cm).
         :param thickness: Épaisseur des faces du CubeSat (cm).
         """
-        self.position = position
-        self.rotation = rotation
+        super().__init__(position, rotation)
         self.size = size
         self.thickness = thickness
         self.cubesat_model = self.get_cubesat()
