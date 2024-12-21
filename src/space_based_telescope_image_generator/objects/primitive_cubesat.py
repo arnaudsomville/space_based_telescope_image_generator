@@ -11,12 +11,12 @@ class PrimitiveCubesat(TargetObject):
     """
 
     def __init__(
-            self,
-            position: list[float], 
-            rotation: list[float], 
-            size: float = 0.0001, 
-            thickness: float = 0.00001
-        )->None:
+        self,
+        position: list[float],
+        rotation: list[float],
+        size: float = 0.0001,
+        thickness: float = 0.00001,
+    ) -> None:
         """
         Constructeur de la classe PrimitiveCubesat.
 
@@ -37,8 +37,8 @@ class PrimitiveCubesat(TargetObject):
         :return: Texture des panneaux solaires.
         """
         return Texture(
-            Pigment('color', [0.2, 0.2, 0.8]),
-            Finish('diffuse', 0.8, 'ambient', 0.2, 'specular', 0.3)
+            Pigment("color", [0.2, 0.2, 0.8]),
+            Finish("diffuse", 0.8, "ambient", 0.2, "specular", 0.3),
         )
 
     def _create_material_texture(self, material: str) -> Texture:
@@ -60,30 +60,65 @@ class PrimitiveCubesat(TargetObject):
 
         cubesat_faces = Union(
             # Faces avec panneaux solaires (Z+ et Z-)
-            Box([-self.size*1e-5, -self.size*1e-5, self.size*1e-5 - self.thickness*1e-5],
-                [self.size*1e-5, self.size*1e-5, self.size*1e-5],
-                solar_panel_texture),
-            Box([-self.size*1e-5, -self.size*1e-5, -self.size*1e-5],
-                [self.size*1e-5, self.size*1e-5, -self.size*1e-5 + self.thickness*1e-5],
-                solar_panel_texture),
+            Box(
+                [
+                    -self.size * 1e-5,
+                    -self.size * 1e-5,
+                    self.size * 1e-5 - self.thickness * 1e-5,
+                ],
+                [self.size * 1e-5, self.size * 1e-5, self.size * 1e-5],
+                solar_panel_texture,
+            ),
+            Box(
+                [-self.size * 1e-5, -self.size * 1e-5, -self.size * 1e-5],
+                [
+                    self.size * 1e-5,
+                    self.size * 1e-5,
+                    -self.size * 1e-5 + self.thickness * 1e-5,
+                ],
+                solar_panel_texture,
+            ),
             # Faces en aluminium (X+ et X-)
-            Box([self.size*1e-5 - self.thickness*1e-5, -self.size*1e-5, -self.size*1e-5],
-                [self.size*1e-5, self.size*1e-5, self.size*1e-5],
-                self._create_material_texture('Brushed_Aluminum')),
-            Box([-self.size*1e-5, -self.size*1e-5, -self.size*1e-5],
-                [-self.size*1e-5 + self.thickness*1e-5, self.size*1e-5, self.size*1e-5],
-                self._create_material_texture('Brushed_Aluminum')),
+            Box(
+                [
+                    self.size * 1e-5 - self.thickness * 1e-5,
+                    -self.size * 1e-5,
+                    -self.size * 1e-5,
+                ],
+                [self.size * 1e-5, self.size * 1e-5, self.size * 1e-5],
+                self._create_material_texture("Brushed_Aluminum"),
+            ),
+            Box(
+                [-self.size * 1e-5, -self.size * 1e-5, -self.size * 1e-5],
+                [
+                    -self.size * 1e-5 + self.thickness * 1e-5,
+                    self.size * 1e-5,
+                    self.size * 1e-5,
+                ],
+                self._create_material_texture("Brushed_Aluminum"),
+            ),
             # Faces dorées (Y+ et Y-)
-            Box([-self.size*1e-5, self.size*1e-5 - self.thickness*1e-5, -self.size*1e-5],
-                [self.size*1e-5, self.size*1e-5, self.size*1e-5],
-                self._create_material_texture('T_Gold_1A')),
-            Box([-self.size*1e-5, -self.size*1e-5, -self.size*1e-5],
-                [self.size*1e-5, -self.size*1e-5 + self.thickness*1e-5, self.size*1e-5],
-                self._create_material_texture('T_Gold_1A'))
+            Box(
+                [
+                    -self.size * 1e-5,
+                    self.size * 1e-5 - self.thickness * 1e-5,
+                    -self.size * 1e-5,
+                ],
+                [self.size * 1e-5, self.size * 1e-5, self.size * 1e-5],
+                self._create_material_texture("T_Gold_1A"),
+            ),
+            Box(
+                [-self.size * 1e-5, -self.size * 1e-5, -self.size * 1e-5],
+                [
+                    self.size * 1e-5,
+                    -self.size * 1e-5 + self.thickness * 1e-5,
+                    self.size * 1e-5,
+                ],
+                self._create_material_texture("T_Gold_1A"),
+            ),
         )
 
         # Ajouter la rotation et la position
-        return cubesat_faces.add_args([
-            'rotate', self.rotation,
-            'translate', self.position
-        ])
+        return cubesat_faces.add_args(
+            ["rotate", self.rotation, "translate", self.position]
+        )

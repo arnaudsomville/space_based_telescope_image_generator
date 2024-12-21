@@ -6,10 +6,10 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Space Based Telescope Image Generator'
-copyright = '2024, Arnaud SOMVILLE'
-author = 'Arnaud SOMVILLE'
-release = '0.1'
+project = "Space Based Telescope Image Generator"
+copyright = "2024, Arnaud SOMVILLE"
+author = "Arnaud SOMVILLE"
+release = "0.1"
 
 # -- General configuration ---------------------------------------------------
 extensions = [

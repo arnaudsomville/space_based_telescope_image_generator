@@ -6,7 +6,6 @@ from typing import ClassVar
 import warnings
 from confz import ConfigSource, BaseConfig, EnvSource, FileSource
 from confz.base_config import BaseConfigMetaclass
-from pydantic import SecretStr
 
 _DEFAULT_CONF_FILE_PATH = Path.home().joinpath(".recruit_me/configuration.yaml")
 _TEMPLATE_CONF_FILE_PATH = (
@@ -33,17 +32,21 @@ def get_config_file_path() -> Path:
     else:
         raise FileNotFoundError("Error : No configuration found, even the template !")
 
+
 class NasaEarthResources(BaseConfig, metaclass=BaseConfigMetaclass):
-    nasa_resources_link:str
+    nasa_resources_link: str
     files: list[str]
 
 
 class OnlineResources(BaseConfig, metaclass=BaseConfigMetaclass):
     """Configuration of online resources."""
+
     nasa_earth_resources: NasaEarthResources
+
 
 class PathManagement(BaseConfig, metaclass=BaseConfigMetaclass):
     """Path management."""
+
     home_folder: str
     resources_path: str
     images_path: str
@@ -52,9 +55,9 @@ class PathManagement(BaseConfig, metaclass=BaseConfigMetaclass):
 
 class MainConfig(BaseConfig, metaclass=BaseConfigMetaclass):
     """Configuration of the project."""
+
     path_management: PathManagement
     online_resources: OnlineResources
-    
 
     CONFIG_SOURCES: ClassVar[list[ConfigSource]] = [
         FileSource(file=get_config_file_path()),
