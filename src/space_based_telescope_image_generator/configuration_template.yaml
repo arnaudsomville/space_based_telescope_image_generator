@@ -1,0 +1,26 @@
+path_management:
+  home_folder: .sbtig
+  images_path: resources/images
+  models_path: resources/models
+
+online_resources:
+  nasa_earth_resources:
+    nasa_resources_link: https://drive.google.com/drive/folders/1nmSkdsWMwS0gSmmUXUKjCoPwgUIWiU2h?usp=sharing
+    files: [
+      "earth_clouds_43K.tif",
+      "earth_clouds_8K.tif",
+      "earth_color_10K.tif",
+      "earth_color_21K.tif",
+      "earth_color_43K.tif",
+      "earth_landocean_16K.png",
+      "earth_landocean_4K.png",
+      "earth_landocean_8K.png",
+      "earth_nightlights_10K.tif",
+      "earth_nightlights_21K.tif",
+      "earth_nightlights_43K.tif",
+      "earth_nightlights_86K.tif",
+      "specular_map 8k.tif",
+      "topography_10k.png",
+      "topography_21K.png",
+      "topography_5k.png"
+    ]
