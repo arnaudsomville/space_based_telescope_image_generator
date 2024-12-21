@@ -53,7 +53,7 @@ docker-compose --version
 ```
 conda create -y -n my_env python=3.11
 conda activate my_env
-pip install pdm ruff=0.3.3 pre-commit
+pip install pdm ruff==0.3.3 pre-commit
 ```
 3. Go to your folder and install the packages using **pdm**. Initialize the project if needed
 ```
