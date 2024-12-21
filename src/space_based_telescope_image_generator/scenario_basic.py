@@ -4,6 +4,7 @@ from vapory import LightSource, Scene, Background
 from space_based_telescope_image_generator.objects.tracking_satellite import TrackingSatellite
 from space_based_telescope_image_generator.objects.basic_earth import BasicEarth
 from space_based_telescope_image_generator.objects.primitive_cubesat import PrimitiveCubesat
+from space_based_telescope_image_generator.utils.configuration import MainConfig
 
 # Définir les constantes
 earth_radius = 6378.0  # Rayon de la Terre en km
@@ -14,7 +15,8 @@ cube_sat_size = 0.0001  # Taille du CubeSat en km (échelle exagérée)
 cube_sat_thk = 0.00001  # Épaisseur des faces du CubeSat
 
 # Chemin des images
-
+home_folder = Path.home().joinpath(MainConfig().path_management.home_folder)
+resources_folder = home_folder.joinpath(MainConfig().path_management.resources_path)
 # Source de lumière simulant le Soleil
 sun = LightSource(
     [75000000, 0, 75000000],  # Position approximative du Soleil
@@ -54,6 +56,6 @@ print(f'Relative distance to the target : {spy_satellite.compute_relative_distan
 # Rendu
 output_folder = Path.home()
 output_file = str(output_folder.joinpath("earth_and_cubesat_render.png"))
-scene.render(output_file, width=1920, height=1080, tempfile='temp.pov', docker=True, resources_folder="/home/arnaud/workspace/5a/P2I_5A/P2i_POV_Ray/resources/")
+scene.render(output_file, width=1920, height=1080, tempfile='temp.pov', docker=True, resources_folder=str(resources_folder))
 
 print('Rendu terminé :', output_file)

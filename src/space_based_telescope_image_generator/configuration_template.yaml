@@ -1,5 +1,6 @@
 path_management:
   home_folder: .sbtig
+  resources_path: resources
   images_path: resources/images
   models_path: resources/models
 

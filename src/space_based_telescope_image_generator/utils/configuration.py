@@ -45,6 +45,7 @@ class OnlineResources(BaseConfig, metaclass=BaseConfigMetaclass):
 class PathManagement(BaseConfig, metaclass=BaseConfigMetaclass):
     """Path management."""
     home_folder: str
+    resources_path: str
     images_path: str
     models_path: str
 
