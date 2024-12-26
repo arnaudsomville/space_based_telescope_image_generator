@@ -17,7 +17,7 @@ from vapory import (
     Density,
     Interior
 )
-from space_based_telescope_image_generator.utils.constants import earth_radius
+from space_based_telescope_image_generator.utils.constants import earth_radius, atmosphere_radius
 
 
 class BasicEarth(POVRayElement):
@@ -28,51 +28,58 @@ class BasicEarth(POVRayElement):
         self.earth_model = self.get_povray_object()
     
     def _add_scattering(self) -> Object:
-        """Create a Rayleigh scattering atmosphere using Scattering.
+        """Create a Rayleigh scattering atmosphere using Scattering with a density function.
+
+        Based on https://news.povray.org/povray.binaries.tutorials/message/<op.uth9wqlmm1sclq%40pignouf>/#<op.uth9wqlmm1sclq%40pignouf>
 
         Returns:
-            Object: A hollow sphere with Rayleigh scattering.
+            Object: A hollow sphere with Rayleigh scattering and variable density.
         """
 
-        # Couleur de diffusion Rayleigh
-        lambda_red = 650.0
-        lambda_green = 555.0
-        lambda_blue = 460.0
+        # Rayleigh parameters
+        base_rayleigh_power = 6.7
+        rayleigh_factor = 1.15e-2 #Montecarlo
+        rayleigh_power = base_rayleigh_power * rayleigh_factor
 
+        lambda_red = 650.0  # nm
+        lambda_green = 555.0  # nm
+        lambda_blue = 460.0  # nm
         rayleigh_scattering_color = [
             (lambda_blue / lambda_red) ** 4,
             (lambda_blue / lambda_green) ** 4,
             1.0
         ]
 
-        # Rayon de l'atmosphère
-        atmosphere_radius = earth_radius + 50
-
-        # Média Rayleigh
+        # Reyleigh Media with variable density
         rayleigh_media = Media(
             Scattering(
-                1,  # Type (Rayleigh Scattering)
+                1,  # Type Rayleigh
                 rayleigh_scattering_color,
-                'extinction', 1.0
+                'extinction', 1.0 
             ),
             Density(
-                'rgb', [0.001, 0.001, 0.001]  # Densité constante faible
+                'function', 
+                '{ 1.0 * exp(-%f * (sqrt(x*x + (y + %f)*(y + %f) + z*z) - %f) / %f) }' % (
+                    rayleigh_power, 
+                    earth_radius, earth_radius, earth_radius, 
+                    atmosphere_radius - earth_radius
+                )
             )
         )
 
-        # Texture transparente
         atmosphere_texture = Texture(
-            Pigment('rgbt', [0, 0, 0, 1]),  # Complètement transparent
+            Pigment('rgbt', [0, 0, 0, 1]),  # Transparent atmosphere
             Finish('ambient', 0, 'diffuse', 0)
         )
 
-        # Retourne une sphère creuse avec scattering
+        # Atmospheric sphere with Rayleigh Media
         return Object(
             Sphere([0, 0, 0], atmosphere_radius),
             atmosphere_texture,
             'hollow',
             Interior(rayleigh_media)
         )
+
 
     def _create_earth(self) -> Object:
         """Create and return the Earth object.

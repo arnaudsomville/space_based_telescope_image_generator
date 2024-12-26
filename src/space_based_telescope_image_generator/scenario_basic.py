@@ -12,7 +12,7 @@ from space_based_telescope_image_generator.utils.configuration import MainConfig
 
 # Définir les constantes
 earth_radius = 6378.0  # Rayon de la Terre en km
-sat_altitude = 5000.0  # Altitude du satellite en km
+sat_altitude = 1000.0  # Altitude du satellite en km
 relative_distance = 0.05  # Distance relative pour positionner le CubeSat
 fov_degree = 60  # Champ de vision en degrés
 cube_sat_size = 0.0001  # Taille du CubeSat en km (échelle exagérée)
