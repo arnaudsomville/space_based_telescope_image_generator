@@ -8,16 +8,18 @@ from vapory import (
     Sphere,
     Texture,
     Pigment,
-    PigmentMap,
     Finish,
     ImageMap,
     Union,
     Media,
     Scattering,
     Density,
-    Interior
+    Interior,
 )
-from space_based_telescope_image_generator.utils.constants import earth_radius, atmosphere_radius
+from space_based_telescope_image_generator.utils.constants import (
+    earth_radius,
+    atmosphere_radius,
+)
 
 
 class BasicEarth(POVRayElement):
@@ -26,7 +28,7 @@ class BasicEarth(POVRayElement):
 
         # Combine Earth and Clouds into a single model
         self.earth_model = self.get_povray_object()
-    
+
     def _add_scattering(self) -> Object:
         """Create a Rayleigh scattering atmosphere using Scattering with a density function.
 
@@ -38,7 +40,7 @@ class BasicEarth(POVRayElement):
 
         # Rayleigh parameters
         base_rayleigh_power = 6.7
-        rayleigh_factor = 1.15e-2 #Montecarlo
+        rayleigh_factor = 1.15e-2  # Montecarlo
         rayleigh_power = base_rayleigh_power * rayleigh_factor
 
         lambda_red = 650.0  # nm
@@ -47,39 +49,39 @@ class BasicEarth(POVRayElement):
         rayleigh_scattering_color = [
             (lambda_blue / lambda_red) ** 4,
             (lambda_blue / lambda_green) ** 4,
-            1.0
+            1.0,
         ]
 
         # Reyleigh Media with variable density
         rayleigh_media = Media(
             Scattering(
-                1,  # Type Rayleigh
-                rayleigh_scattering_color,
-                'extinction', 1.0 
+                1, rayleigh_scattering_color, "extinction", 1.0  # Type Rayleigh
             ),
             Density(
-                'function', 
-                '{ 1.0 * exp(-%f * (sqrt(x*x + (y + %f)*(y + %f) + z*z) - %f) / %f) }' % (
-                    rayleigh_power, 
-                    earth_radius, earth_radius, earth_radius, 
-                    atmosphere_radius - earth_radius
-                )
-            )
+                "function",
+                "{ 1.0 * exp(-%f * (sqrt(x*x + (y + %f)*(y + %f) + z*z) - %f) / %f) }"
+                % (
+                    rayleigh_power,
+                    earth_radius,
+                    earth_radius,
+                    earth_radius,
+                    atmosphere_radius - earth_radius,
+                ),
+            ),
         )
 
         atmosphere_texture = Texture(
-            Pigment('rgbt', [0, 0, 0, 1]),  # Transparent atmosphere
-            Finish('ambient', 0, 'diffuse', 0)
+            Pigment("rgbt", [0, 0, 0, 1]),  # Transparent atmosphere
+            Finish("ambient", 0, "diffuse", 0),
         )
 
         # Atmospheric sphere with Rayleigh Media
         return Object(
             Sphere([0, 0, 0], atmosphere_radius),
             atmosphere_texture,
-            'hollow',
-            Interior(rayleigh_media)
+            "hollow",
+            Interior(rayleigh_media),
         )
-
 
     def _create_earth(self) -> Object:
         """Create and return the Earth object.
@@ -116,8 +118,10 @@ class BasicEarth(POVRayElement):
             earth_normal,
         )
         return Union(
-            Object(Sphere([0, 0, 0], earth_radius), earth_texture, "rotate", [0, 25, 0]),
-            scattering
+            Object(
+                Sphere([0, 0, 0], earth_radius), earth_texture, "rotate", [0, 25, 0]
+            ),
+            scattering,
         )
 
     def _create_clouds(self) -> Object:
