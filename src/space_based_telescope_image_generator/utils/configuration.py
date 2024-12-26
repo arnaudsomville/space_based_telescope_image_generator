@@ -7,11 +7,11 @@ import warnings
 from confz import ConfigSource, BaseConfig, EnvSource, FileSource
 from confz.base_config import BaseConfigMetaclass
 
-_DEFAULT_CONF_FILE_PATH = Path.home().joinpath(".recruit_me/configuration.yaml")
+_DEFAULT_CONF_FILE_PATH = Path.home().joinpath(".sbtig/configuration.yaml")
 _TEMPLATE_CONF_FILE_PATH = (
     Path(__file__).parents[1].joinpath("configuration_template.yaml")
 )
-_CONF_FILE_ENV_VAR_NAME = "RECRUIT_ME_CONF_FILE_PATH"
+_CONF_FILE_ENV_VAR_NAME = "SBTIG_CONF_FILE_PATH"
 
 
 def get_config_file_path() -> Path:
