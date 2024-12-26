@@ -12,6 +12,10 @@ from vapory import (
     Finish,
     ImageMap,
     Union,
+    Media,
+    Scattering,
+    Density,
+    Interior
 )
 from space_based_telescope_image_generator.utils.constants import earth_radius
 
@@ -24,21 +28,51 @@ class BasicEarth(POVRayElement):
         self.earth_model = self.get_povray_object()
     
     def _add_scattering(self) -> Object:
-        """Create a basic scattering sphere.
+        """Create a Rayleigh scattering atmosphere using Scattering.
 
         Returns:
-            Object: Transparent blue sphere.
+            Object: A hollow sphere with Rayleigh scattering.
         """
-        scattering_texture = Texture(
-            Pigment(
-                'rgbt', [0.1, 0.1, 0.9, 0.7]  # Light blue (RGB) with 90% transparency
+
+        # Couleur de diffusion Rayleigh
+        lambda_red = 650.0
+        lambda_green = 555.0
+        lambda_blue = 460.0
+
+        rayleigh_scattering_color = [
+            (lambda_blue / lambda_red) ** 4,
+            (lambda_blue / lambda_green) ** 4,
+            1.0
+        ]
+
+        # Rayon de l'atmosphère
+        atmosphere_radius = earth_radius + 50
+
+        # Média Rayleigh
+        rayleigh_media = Media(
+            Scattering(
+                1,  # Type (Rayleigh Scattering)
+                rayleigh_scattering_color,
+                'extinction', 1.0
             ),
-            Finish(
-                'ambient', 0.1,  # Minimal ambient light
-                'diffuse', 0.1   # Low diffuse reflection
+            Density(
+                'rgb', [0.001, 0.001, 0.001]  # Densité constante faible
             )
         )
-        return Object(Sphere([0, 0, 0], (earth_radius + 50)), scattering_texture)
+
+        # Texture transparente
+        atmosphere_texture = Texture(
+            Pigment('rgbt', [0, 0, 0, 1]),  # Complètement transparent
+            Finish('ambient', 0, 'diffuse', 0)
+        )
+
+        # Retourne une sphère creuse avec scattering
+        return Object(
+            Sphere([0, 0, 0], atmosphere_radius),
+            atmosphere_texture,
+            'hollow',
+            Interior(rayleigh_media)
+        )
 
     def _create_earth(self) -> Object:
         """Create and return the Earth object.
