@@ -15,7 +15,9 @@ from vapory import (
     Density,
     Interior,
 )
-from space_based_telescope_image_generator.objects.astral_objects.astral_object import AstralObject
+from space_based_telescope_image_generator.objects.astral_objects.astral_object import (
+    AstralObject,
+)
 from space_based_telescope_image_generator.utils.configuration import MainConfig
 from space_based_telescope_image_generator.utils.constants import (
     earth_radius,

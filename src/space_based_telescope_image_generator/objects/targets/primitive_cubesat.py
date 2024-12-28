@@ -2,7 +2,9 @@
 
 from vapory import Texture, Pigment, Finish, Box, Union
 
-from space_based_telescope_image_generator.objects.targets.target_object import TargetObject
+from space_based_telescope_image_generator.objects.targets.target_object import (
+    TargetObject,
+)
 
 
 class PrimitiveCubesat(TargetObject):

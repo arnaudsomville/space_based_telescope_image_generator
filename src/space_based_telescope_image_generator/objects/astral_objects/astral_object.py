@@ -6,6 +6,7 @@ from vapory import (
 
 from abc import ABC, abstractmethod
 
+
 class AstralObject(ABC, POVRayElement):
     """Base class for all the astral objects."""
 
@@ -13,4 +14,3 @@ class AstralObject(ABC, POVRayElement):
     def get_povray_object(self):
         """Retrieve the povray object."""
         pass
-

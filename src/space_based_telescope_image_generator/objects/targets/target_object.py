@@ -35,9 +35,8 @@ class TargetObject(ABC, POVRayElement):
             list[float]: attitude.
         """
         return self.attitude
-    
+
     @abstractmethod
     def get_povray_object(self):
         """Retrieve the povray object."""
         pass
-

@@ -37,9 +37,11 @@ class NasaEarthResources(BaseConfig, metaclass=BaseConfigMetaclass):
     nasa_resources_link: str
     files: list[str]
 
+
 class NasaStarmapResources(BaseConfig, metaclass=BaseConfigMetaclass):
     nasa_resources_link: str
     files: list[str]
+
 
 class OnlineResources(BaseConfig, metaclass=BaseConfigMetaclass):
     """Configuration of online resources."""
@@ -47,13 +49,16 @@ class OnlineResources(BaseConfig, metaclass=BaseConfigMetaclass):
     nasa_earth_resources: NasaEarthResources
     nasa_starmap_resources: NasaStarmapResources
 
+
 class ResolutionConfiguration(BaseConfig, metaclass=BaseConfigMetaclass):
     """Configuration for which image resolutions are used."""
+
     earth_texture_resolution: str
     earth_topography_resolution: str
     earth_clouds_resolution: str
     modelize_scattering: bool
-    starmap_resolution:str
+    starmap_resolution: str
+
 
 class PathManagement(BaseConfig, metaclass=BaseConfigMetaclass):
     """Path management."""
