@@ -1,4 +1,4 @@
-"""Define a basic Earth without Scattering."""
+"""Define a basic Earth."""
 
 from vapory import (
     POVRayElement,
@@ -16,13 +16,14 @@ from vapory import (
     Density,
     Interior,
 )
+from space_based_telescope_image_generator.objects.astral_object import AstralObject
 from space_based_telescope_image_generator.utils.constants import (
     earth_radius,
     atmosphere_radius,
 )
 
 
-class BasicEarth(POVRayElement):
+class Earth(AstralObject):
     def __init__(self) -> None:
         """Constructor for BasicEarth."""
 

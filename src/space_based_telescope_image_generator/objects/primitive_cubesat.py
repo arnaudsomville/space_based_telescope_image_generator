@@ -13,7 +13,7 @@ class PrimitiveCubesat(TargetObject):
     def __init__(
         self,
         position: list[float],
-        rotation: list[float],
+        attitude: list[float],
         size: float = 0.0001,
         thickness: float = 0.00001,
     ) -> None:
@@ -21,14 +21,14 @@ class PrimitiveCubesat(TargetObject):
         Constructeur de la classe PrimitiveCubesat.
 
         :param position: Position absolue du CubeSat [x, y, z].
-        :param rotation: Rotation du CubeSat sur les axes [x, y, z] (en degrés).
+        :param attitude: Rotation du CubeSat sur les axes [x, y, z] (en degrés).
         :param size: Taille du CubeSat (cm).
         :param thickness: Épaisseur des faces du CubeSat (cm).
         """
-        super().__init__(position, rotation)
+        super().__init__(position, attitude)
         self.size = size
         self.thickness = thickness
-        self.cubesat_model = self.get_cubesat()
+        self.cubesat_model = self.get_povray_object()
 
     def _create_solar_panel_texture(self) -> Texture:
         """
@@ -50,7 +50,7 @@ class PrimitiveCubesat(TargetObject):
         """
         return Texture(material)
 
-    def get_cubesat(self) -> Union:
+    def get_povray_object(self) -> Union:
         """
         Crée et retourne le modèle du CubeSat.
 
@@ -120,5 +120,5 @@ class PrimitiveCubesat(TargetObject):
 
         # Ajouter la rotation et la position
         return cubesat_faces.add_args(
-            ["rotate", self.rotation, "translate", self.position]
+            ["rotate", self.attitude, "translate", self.position]
         )
