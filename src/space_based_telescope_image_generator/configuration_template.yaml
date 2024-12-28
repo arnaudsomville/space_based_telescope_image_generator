@@ -25,3 +25,12 @@ online_resources:
       "topography_21K.png",
       "topography_5k.png"
     ]
+  
+  nasa_starmap_resources:
+    nasa_resources_link: https://drive.google.com/drive/folders/1LycgvMuRNgOu3wm71BHdSZeRbqT4o1wd?usp=sharing
+    files: [
+      "starmap_2020_4k_gal.exr",
+      "starmap_2020_8k_gal.exr",
+      "starmap_2020_16k_gal.exr",
+      "starmap_2020_32k_gal.exr",
+    ]

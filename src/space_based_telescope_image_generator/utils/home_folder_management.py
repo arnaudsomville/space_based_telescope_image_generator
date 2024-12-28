@@ -20,11 +20,17 @@ def verify_home_folder() -> None:  # pragma: no cover
 
     image_path = home_folder.joinpath(MainConfig().path_management.images_path)
 
-    # Download NASA Assets
+    # Download NASA Earth Assets
     download_gdrive_folder(
         MainConfig().online_resources.nasa_earth_resources.nasa_resources_link,
         image_path,
         MainConfig().online_resources.nasa_earth_resources.files,
+    )
+    # Download NASA Starmap Assets
+    download_gdrive_folder(
+        MainConfig().online_resources.nasa_starmap_resources.nasa_resources_link,
+        image_path,
+        MainConfig().online_resources.nasa_starmap_resources.files,
     )
 
 

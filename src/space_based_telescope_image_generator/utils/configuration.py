@@ -17,7 +17,7 @@ _CONF_FILE_ENV_VAR_NAME = "SBTIG_CONF_FILE_PATH"
 def get_config_file_path() -> Path:
     """Get configuration file path.
 
-    If the env var is set MPC_CONF_FILE_PATH, it reads the CONF_FILE from there.
+    If the env var is set _CONF_FILE_PATH, it reads the CONF_FILE from there.
     Otherwise, it uses the default path in _DEFAULT_CONF_FILE_PATH
 
     """
@@ -26,7 +26,7 @@ def get_config_file_path() -> Path:
         return path
     elif _TEMPLATE_CONF_FILE_PATH.exists():
         warnings.warn(
-            "Warning : Template configuration loaded : No configuration file found, verify the _CONF_FILE_ENV_VAR_NAME env variable or the .recruit_me home folder."
+            "Warning : Template configuration loaded : No configuration file found, verify the _CONF_FILE_ENV_VAR_NAME env variable or the .sbtig home folder."
         )
         return _TEMPLATE_CONF_FILE_PATH
     else:
@@ -37,11 +37,15 @@ class NasaEarthResources(BaseConfig, metaclass=BaseConfigMetaclass):
     nasa_resources_link: str
     files: list[str]
 
+class NasaStarmapResources(BaseConfig, metaclass=BaseConfigMetaclass):
+    nasa_resources_link: str
+    files: list[str]
 
 class OnlineResources(BaseConfig, metaclass=BaseConfigMetaclass):
     """Configuration of online resources."""
 
     nasa_earth_resources: NasaEarthResources
+    nasa_starmap_resources: NasaStarmapResources
 
 
 class PathManagement(BaseConfig, metaclass=BaseConfigMetaclass):
