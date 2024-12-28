@@ -1,0 +1,7 @@
+space\_based\_telescope\_image\_generator.scene\_manager\_exemple module
+========================================================================
+
+.. automodule:: space_based_telescope_image_generator.scene_manager_exemple
+   :members:
+   :undoc-members:
+   :show-inheritance:

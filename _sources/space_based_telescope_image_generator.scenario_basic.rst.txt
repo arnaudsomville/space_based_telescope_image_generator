@@ -1,7 +1,0 @@
-space\_based\_telescope\_image\_generator.scenario\_basic module
-================================================================
-
-.. automodule:: space_based_telescope_image_generator.scenario_basic
-   :members:
-   :undoc-members:
-   :show-inheritance:

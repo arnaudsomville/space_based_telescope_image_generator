@@ -7,7 +7,7 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   space_based_telescope_image_generator.scenario_basic
+   space_based_telescope_image_generator.scene_manager_exemple
 
 Module contents
 ---------------
