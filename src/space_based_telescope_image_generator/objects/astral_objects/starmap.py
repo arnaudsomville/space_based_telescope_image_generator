@@ -4,13 +4,15 @@ from vapory import (
     Object,
     Pigment,
     ImageMap,
+    InteriorTexture,
     Texture,
     Finish,
     Sphere
 )
-from space_based_telescope_image_generator.objects.astral_object import AstralObject
+from space_based_telescope_image_generator.objects.astral_objects.astral_object import AstralObject
+from space_based_telescope_image_generator.utils.configuration import MainConfig
 from space_based_telescope_image_generator.utils.constants import (
-    sun_oort_cloud_distance
+    starmap_sphere_radius
 )
 
 class StarMap(AstralObject):
@@ -29,11 +31,9 @@ class StarMap(AstralObject):
         starmap_pigment = Pigment(
             ImageMap(
                 "exr",
-                '"/resources/images/starmap_2020_16k_gal.exr"',
-                "map_type",
-                2,
-                "interpolate",
-                2,
+                f'"/resources/images/starmap_2020_{MainConfig().resolution_configuration.starmap_resolution}_gal.exr"',
+                "map_type", 2,
+                "interpolate", 2,
             )
         )
         starmap_texture = Texture(
@@ -41,7 +41,6 @@ class StarMap(AstralObject):
             Finish(
                 "diffuse", 0,  # No diffuse reflection
                 "ambient", 1,  # Fully self-illuminated
-                "emission", 1  # Emits light to appear visible
             )
         )
-        return Object(Sphere([0, 0, 0], sun_oort_cloud_distance), starmap_texture, "hollow") #Centered on Earth TODO: Change that ?
+        return Object(Sphere([0, 0, 0], starmap_sphere_radius), starmap_texture, "hollow") #Centered on Earth TODO: Change that ?

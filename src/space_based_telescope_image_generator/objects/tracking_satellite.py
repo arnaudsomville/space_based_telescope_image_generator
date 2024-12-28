@@ -3,7 +3,7 @@
 import math
 from vapory import POVRayElement, Camera
 
-from space_based_telescope_image_generator.objects.target_object import TargetObject
+from space_based_telescope_image_generator.objects.targets.target_object import TargetObject
 
 
 class TrackingSatellite(POVRayElement):

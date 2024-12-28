@@ -1,14 +1,16 @@
 """Manage the scene definition and image generation."""
 
 from pathlib import Path
-from space_based_telescope_image_generator.objects.earth import Earth
-from space_based_telescope_image_generator.objects.starmap import StarMap
-from space_based_telescope_image_generator.objects.sun import Sun
-from space_based_telescope_image_generator.objects.target_object import TargetObject
+from space_based_telescope_image_generator.objects.astral_objects.earth import Earth
+from space_based_telescope_image_generator.objects.astral_objects.starmap import StarMap
+from space_based_telescope_image_generator.objects.astral_objects.sun import Sun
+from space_based_telescope_image_generator.objects.targets.target_object import TargetObject
 from space_based_telescope_image_generator.objects.tracking_satellite import TrackingSatellite
 from space_based_telescope_image_generator.utils.configuration import MainConfig
 from space_based_telescope_image_generator.utils.home_folder_management import verify_home_folder
 from vapory import Scene
+
+from space_based_telescope_image_generator.utils.resolution_checker import check_resolutions
 
 
 class SceneManager:
@@ -17,6 +19,7 @@ class SceneManager:
     def __init__(self, target: TargetObject, satellite: TrackingSatellite,sun_direction_deg: float = 0.0):
         """Class constructor."""
         verify_home_folder()
+        check_resolutions()
         self.earth = Earth().get_povray_object()
         self.background = StarMap().get_povray_object()
         self.sun = Sun(sun_direction_deg).get_povray_object()

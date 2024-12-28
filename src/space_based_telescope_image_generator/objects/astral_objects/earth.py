@@ -1,7 +1,6 @@
 """Define a basic Earth."""
 
 from vapory import (
-    POVRayElement,
     BumpMap,
     Normal,
     Object,
@@ -16,7 +15,8 @@ from vapory import (
     Density,
     Interior,
 )
-from space_based_telescope_image_generator.objects.astral_object import AstralObject
+from space_based_telescope_image_generator.objects.astral_objects.astral_object import AstralObject
+from space_based_telescope_image_generator.utils.configuration import MainConfig
 from space_based_telescope_image_generator.utils.constants import (
     earth_radius,
     atmosphere_radius,
@@ -91,11 +91,10 @@ class Earth(AstralObject):
             (Object): The textured Earth.
 
         """
-        scattering = self._add_scattering()
         earth_pigment = Pigment(
             ImageMap(
                 "tiff",
-                '"/resources/images/earth_color_43K.tif"',
+                f'"/resources/images/earth_color_{MainConfig().resolution_configuration.earth_texture_resolution}.tif"',
                 "map_type",
                 1,
                 "interpolate",
@@ -104,7 +103,7 @@ class Earth(AstralObject):
         )
         earth_normal = Normal(
             BumpMap(
-                '"/resources/images/topography_21K.png"',
+                f'"/resources/images/topography_{MainConfig().resolution_configuration.earth_topography_resolution}.png"',
                 "map_type",
                 1,
                 "interpolate",
@@ -118,11 +117,8 @@ class Earth(AstralObject):
             Finish("diffuse", 0.8, "ambient", 0, "specular", 0.2, "roughness", 0.05),
             earth_normal,
         )
-        return Union(
-            Object(
-                Sphere([0, 0, 0], earth_radius), earth_texture, "rotate", [0, 25, 0]
-            ),
-            scattering,
+        return Object(
+            Sphere([0, 0, 0], earth_radius), earth_texture, "rotate", [0, 25, 0]
         )
 
     def _create_clouds(self) -> Object:
@@ -135,7 +131,7 @@ class Earth(AstralObject):
         clouds_pigment = Pigment(
             ImageMap(
                 "tiff",
-                '"/resources/images/earth_clouds_43K.tif"',
+                f'"/resources/images/earth_clouds_{MainConfig().resolution_configuration.earth_clouds_resolution}.tif"',
                 "map_type",
                 1,
                 "interpolate",
@@ -159,5 +155,8 @@ class Earth(AstralObject):
         # Create Earth and Clouds components
         earth = self._create_earth()
         clouds = self._create_clouds()
+        scattering = self._add_scattering()
 
+        if MainConfig().resolution_configuration.modelize_scattering:
+            return Union(clouds, earth, scattering)
         return Union(clouds, earth)

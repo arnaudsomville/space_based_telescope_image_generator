@@ -4,14 +4,14 @@ from pathlib import Path
 from space_based_telescope_image_generator.objects.tracking_satellite import (
     TrackingSatellite,
 )
-from space_based_telescope_image_generator.objects.primitive_cubesat import (
+from space_based_telescope_image_generator.objects.targets.primitive_cubesat import (
     PrimitiveCubesat,
 )
 
 from space_based_telescope_image_generator.processings.scene_manager import SceneManager
 from space_based_telescope_image_generator.utils.constants import earth_radius
 
-sat_altitude = 3000 
+sat_altitude = 5000 
 relative_distance_to_satellite = 0.05
 
 #Firstly we define a target

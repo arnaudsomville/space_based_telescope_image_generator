@@ -47,6 +47,13 @@ class OnlineResources(BaseConfig, metaclass=BaseConfigMetaclass):
     nasa_earth_resources: NasaEarthResources
     nasa_starmap_resources: NasaStarmapResources
 
+class ResolutionConfiguration(BaseConfig, metaclass=BaseConfigMetaclass):
+    """Configuration for which image resolutions are used."""
+    earth_texture_resolution: str
+    earth_topography_resolution: str
+    earth_clouds_resolution: str
+    modelize_scattering: bool
+    starmap_resolution:str
 
 class PathManagement(BaseConfig, metaclass=BaseConfigMetaclass):
     """Path management."""
@@ -62,6 +69,7 @@ class MainConfig(BaseConfig, metaclass=BaseConfigMetaclass):
 
     path_management: PathManagement
     online_resources: OnlineResources
+    resolution_configuration: ResolutionConfiguration
 
     CONFIG_SOURCES: ClassVar[list[ConfigSource]] = [
         FileSource(file=get_config_file_path()),
