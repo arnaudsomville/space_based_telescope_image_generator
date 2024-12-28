@@ -32,10 +32,11 @@ class StarMap(AstralObject):
             ImageMap(
                 "exr",
                 f'"/resources/images/starmap_2020_{MainConfig().resolution_configuration.starmap_resolution}_gal.exr"',
-                "map_type", 2,
+                "map_type", 1,
                 "interpolate", 2,
             )
         )
+
         starmap_texture = Texture(
             starmap_pigment,
             Finish(
@@ -43,4 +44,4 @@ class StarMap(AstralObject):
                 "ambient", 1,  # Fully self-illuminated
             )
         )
-        return Object(Sphere([0, 0, 0], starmap_sphere_radius), starmap_texture, "hollow") #Centered on Earth TODO: Change that ?
+        return Object(Sphere([0, 0, 0], starmap_sphere_radius),starmap_texture, "hollow", "scale", -1) #Centered on Earth TODO: Change that ?

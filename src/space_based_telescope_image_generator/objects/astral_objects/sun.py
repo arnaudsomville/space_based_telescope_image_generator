@@ -31,7 +31,4 @@ class Sun(AstralObject):
             [earth_sun_distance*np.cos(np.deg2rad(self.illumination_angle_deg)), earth_sun_distance*np.sin(np.deg2rad(self.illumination_angle_deg)),0],
             "color",
             [1, 1, 1],
-            "parallel",
-            "point_at",
-            [0, 0, 0],
         )

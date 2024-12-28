@@ -66,12 +66,17 @@ class SceneManager:
         scene = Scene(
             self.satellite.get_camera(),
             objects=[
-                self.background,
                 self.sun,
                 self.earth,
-                self.target.get_povray_object()
+                self.target.get_povray_object(),
+                self.background,
             ],
-            included=["metals.inc", "textures.inc"],
+            included=["metals.inc", "textures.inc", "colors.inc"],
+            global_settings=[
+                'max_trace_level', 128,
+                'adc_bailout', 1e-15,
+                'assumed_gamma', 1.0
+            ]
         )
 
         # Rendu
