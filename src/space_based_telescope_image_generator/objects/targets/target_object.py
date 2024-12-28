@@ -2,11 +2,13 @@
 
 from vapory import POVRayElement
 
+from abc import ABC, abstractmethod
 
-class TargetObject(POVRayElement):
+
+class TargetObject(ABC, POVRayElement):
     """Base for targets."""
 
-    def __init__(self, position: list[float], rotation: list[float]) -> None:
+    def __init__(self, position: list[float], attitude: list[float]) -> None:
         """_summary_
 
         Args:
@@ -16,7 +18,7 @@ class TargetObject(POVRayElement):
         """
         super().__init__()
         self.position = position
-        self.rotation = rotation
+        self.attitude = attitude
 
     def get_position(self) -> list[float]:
         """Retrieve object's position.
@@ -26,10 +28,15 @@ class TargetObject(POVRayElement):
         """
         return self.position
 
-    def get_rotation(self) -> list[float]:
-        """Retrieve object's rotation.
+    def get_attitude(self) -> list[float]:
+        """Retrieve object's attitude.
 
         Returns:
-            list[float]: rotation.
+            list[float]: attitude.
         """
-        return self.rotation
+        return self.attitude
+
+    @abstractmethod
+    def get_povray_object(self):
+        """Retrieve the povray object."""
+        pass

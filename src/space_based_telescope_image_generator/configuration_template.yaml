@@ -1,3 +1,6 @@
+#This file is a template. It is automatically copied in C:\Users\Username\.sbtig for Windows or /home/username/.sbtig for linux
+#Modify the copied version instead of this one
+
 path_management:
   home_folder: .sbtig
   resources_path: resources
@@ -25,3 +28,20 @@ online_resources:
       "topography_21K.png",
       "topography_5k.png"
     ]
+  
+  nasa_starmap_resources:
+    nasa_resources_link: https://drive.google.com/drive/folders/1LycgvMuRNgOu3wm71BHdSZeRbqT4o1wd?usp=sharing
+    files: [
+      "starmap_2020_4k_gal.exr",
+      "starmap_2020_8k_gal.exr",
+      "starmap_2020_16k_gal.exr",
+      "starmap_2020_32k_gal.exr",
+    ]
+
+#See resolution_checker.py for the available configurations
+resolution_configuration:
+  earth_texture_resolution: '43K'
+  earth_topography_resolution: '21K'
+  earth_clouds_resolution: '43K'
+  modelize_scattering: True
+  starmap_resolution: '16k'

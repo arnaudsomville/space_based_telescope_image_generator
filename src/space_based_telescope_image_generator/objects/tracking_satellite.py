@@ -3,13 +3,21 @@
 import math
 from vapory import POVRayElement, Camera
 
-from space_based_telescope_image_generator.objects.target_object import TargetObject
+from space_based_telescope_image_generator.objects.targets.target_object import (
+    TargetObject,
+)
 
 
 class TrackingSatellite(POVRayElement):
     """Satellite being the main camera for image generation."""
 
-    def __init__(self, position: list[float], fov: float = 60.0) -> None:
+    def __init__(
+        self,
+        position: list[float],
+        fov: float = 60.0,
+        image_width: int = 1920,
+        image_height: int = 1080,
+    ) -> None:
         """Constructor.
 
         Args:
@@ -18,6 +26,8 @@ class TrackingSatellite(POVRayElement):
         self.position: list[float] = position
         self.pointing: list[float] = [0, 0, 0]  # NADIR pointing by default
         self.fov: float = fov
+        self.image_width = image_width
+        self.image_height = image_height
 
     def target_pointing(self, target_position: list[float]) -> list[float]:
         """Compute the Tracking Satellite's pointing.
