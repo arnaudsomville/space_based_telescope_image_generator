@@ -8,17 +8,24 @@ from abc import ABC, abstractmethod
 class TargetObject(ABC, POVRayElement):
     """Base for targets."""
 
-    def __init__(self, position: list[float], attitude: list[float]) -> None:
+    def __init__(
+        self,
+        position: list[float],
+        attitude: list[float],
+        additional_includes: list[str] = [],
+    ) -> None:
         """_summary_
 
         Args:
             position (list[float]): Position vector in km.
             rotation (list[float]): Rotation vector of the object in degree.
+            additional_includes: list[str]: Important includes.
 
         """
         super().__init__()
         self.position = position
         self.attitude = attitude
+        self.additional_includes = additional_includes
 
     def get_position(self) -> list[float]:
         """Retrieve object's position.

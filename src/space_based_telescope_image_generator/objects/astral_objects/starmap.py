@@ -13,6 +13,7 @@ class StarMap(AstralObject):
 
     def __init__(self) -> None:
         """Class constructor."""
+        super().__init__()
         self.starmap = self.get_povray_object()
 
     def get_povray_object(self) -> Object:
