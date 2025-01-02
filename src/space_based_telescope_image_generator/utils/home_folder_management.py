@@ -19,6 +19,7 @@ def verify_home_folder() -> None:  # pragma: no cover
         )
 
     image_path = home_folder.joinpath(MainConfig().path_management.images_path)
+    models_path = home_folder.joinpath(MainConfig().path_management.models_path)
 
     # Download NASA Earth Assets
     download_gdrive_folder(
@@ -31,6 +32,14 @@ def verify_home_folder() -> None:  # pragma: no cover
         MainConfig().online_resources.nasa_starmap_resources.nasa_resources_link,
         image_path,
         MainConfig().online_resources.nasa_starmap_resources.files,
+    )
+    # Download Rusty Satellite
+    download_gdrive_folder(
+        MainConfig().online_resources.rusty_satellite_resources.rusty_satellite_resources_link,
+        models_path.joinpath(
+            MainConfig().online_resources.rusty_satellite_resources.model_name
+        ),
+        MainConfig().online_resources.rusty_satellite_resources.files,
     )
 
 

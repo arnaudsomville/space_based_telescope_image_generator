@@ -23,6 +23,7 @@ class TrackingSatellite(POVRayElement):
         Args:
             position (list[float]): Position vector in km.
         """
+        self.additional_includes: list[str] = []
         self.position: list[float] = position
         self.pointing: list[float] = [0, 0, 0]  # NADIR pointing by default
         self.fov: float = fov
