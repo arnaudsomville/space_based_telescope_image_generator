@@ -33,7 +33,7 @@ class Sun(AstralObject):
     ) -> LightSource:  # First dummy modelization. TODO: Change (IN PROGRESS)
         """Retrieve the povray object."""
         ref = datetime.datetime(2025, 3, 10, 9, 1, 0)  # Datetime Vernal equinox of 2025 UTC
-        date = datetime.datetime(2025, 3, 10, 9, 1, 0) # TODO: iterate it so that it takes the date of the simulation
+        date = datetime.datetime(2025, 3, 10, 9, 1, 0) # TODO: Iterate it so that it takes the date of the simulation
 
         # Get the difference in seconds
         seconds_difference = (date - ref).total_seconds()   # [s] Difference between reference date and current date
