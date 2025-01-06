@@ -24,6 +24,7 @@ class Sun(AstralObject):
         Args:
             illumination_angle_deg (float): Angle defining the sun position in the plane.
         """
+        super().__init__()
         self.illumination_angle_deg = illumination_angle_deg % 360
         self.sun = self.get_povray_object()
 
