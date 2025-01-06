@@ -1,6 +1,10 @@
 """Manage the scene definition and image generation."""
 
 from pathlib import Path
+from typing import Union
+from space_based_telescope_image_generator.objects.astral_objects.astral_object import (
+    AstralObject,
+)
 from space_based_telescope_image_generator.objects.astral_objects.earth import Earth
 from space_based_telescope_image_generator.objects.astral_objects.starmap import StarMap
 from space_based_telescope_image_generator.objects.astral_objects.sun import Sun
@@ -33,13 +37,21 @@ class SceneManager:
         """Class constructor."""
         verify_home_folder()
         check_resolutions()
-        self.earth = Earth().get_povray_object()
-        self.background = StarMap().get_povray_object()
-        self.sun = Sun(sun_direction_deg).get_povray_object()
+        self.earth = Earth()
+        self.background = StarMap()
+        self.sun = Sun(sun_direction_deg)
         self.verify_satellite(satellite)
         self.satellite = satellite
         self.verify_target(target)
         self.target = target
+
+        self.object_list: list[Union[AstralObject, TargetObject]] = [
+            self.background,
+            self.sun,
+            self.earth,
+            self.satellite,
+            self.target,
+        ]
 
     def verify_target(self, target: TargetObject) -> None:
         """Set the target.
@@ -63,6 +75,19 @@ class SceneManager:
             raise ValueError("Provided object is not a valid TrackingSatellite.")
         self.target = satellite
 
+    def check_includes(self) -> list[str]:
+        """Retrieve important includes.
+
+        Returns:
+            list[str]: Libraries /files to be included in the POVRy script.
+
+        """
+        include_list = []
+        for obj in self.object_list:
+            include_list.extend(obj.additional_includes)
+
+        return list(set(include_list))
+
     def render_image(self, ouput_image_path: Path) -> None:
         """Render the image.
 
@@ -75,18 +100,17 @@ class SceneManager:
         resources_folder = home_folder.joinpath(
             MainConfig().path_management.resources_path
         )
-
         ouput_image_path.parent.mkdir(parents=True, exist_ok=True)
 
         scene = Scene(
             self.satellite.get_camera(),
             objects=[
-                self.sun,
-                self.earth,
+                self.sun.get_povray_object(),
+                self.earth.get_povray_object(),
                 self.target.get_povray_object(),
-                self.background,
+                self.background.get_povray_object(),
             ],
-            included=["metals.inc", "textures.inc", "colors.inc"],
+            included=self.check_includes(),
             global_settings=[
                 "max_trace_level",
                 128,

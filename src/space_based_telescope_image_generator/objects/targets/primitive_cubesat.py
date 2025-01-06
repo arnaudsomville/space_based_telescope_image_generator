@@ -27,7 +27,7 @@ class PrimitiveCubesat(TargetObject):
         :param size: Taille du CubeSat (cm).
         :param thickness: Épaisseur des faces du CubeSat (cm).
         """
-        super().__init__(position, attitude)
+        super().__init__(position, attitude, ["metals.inc", "textures.inc"])
         self.size = size
         self.thickness = thickness
         self.cubesat_model = self.get_povray_object()

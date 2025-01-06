@@ -28,7 +28,7 @@ from space_based_telescope_image_generator.utils.constants import (
 class Earth(AstralObject):
     def __init__(self) -> None:
         """Constructor for BasicEarth."""
-
+        super().__init__()
         # Combine Earth and Clouds into a single model
         self.earth_model = self.get_povray_object()
 

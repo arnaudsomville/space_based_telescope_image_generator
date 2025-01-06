@@ -43,11 +43,20 @@ class NasaStarmapResources(BaseConfig, metaclass=BaseConfigMetaclass):
     files: list[str]
 
 
+class RustySatelliteResources(BaseConfig, metaclass=BaseConfigMetaclass):
+    model_name: str
+    geom_inc_file: str
+    povray_id: str
+    rusty_satellite_resources_link: str
+    files: list[str]
+
+
 class OnlineResources(BaseConfig, metaclass=BaseConfigMetaclass):
     """Configuration of online resources."""
 
     nasa_earth_resources: NasaEarthResources
     nasa_starmap_resources: NasaStarmapResources
+    rusty_satellite_resources: RustySatelliteResources
 
 
 class ResolutionConfiguration(BaseConfig, metaclass=BaseConfigMetaclass):

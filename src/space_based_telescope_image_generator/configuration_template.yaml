@@ -37,6 +37,30 @@ online_resources:
       "starmap_2020_16k_gal.exr",
       "starmap_2020_32k_gal.exr",
     ]
+  rusty_satellite_resources:
+    model_name: rusty_satellite
+    geom_inc_file: Rusty_Satellite.inc
+    povray_id: Rusty_Satellite
+    rusty_satellite_resources_link: https://drive.google.com/drive/folders/175YKlRbq-AtzdPO6vNI4hnDstZgsW0Sj?usp=sharing
+    files: [
+      "Rusty_Satellite.inc",
+      "Satellite_satellite_Antenna_BaseColor.jpg",
+      "Satellite_satellite_Antenna_Metallic.jpg",
+      "Satellite_satellite_Antenna_Normal.jpg",
+      "Satellite_satellite_Couro_BaseColor.jpg",
+      "Satellite_satellite_Couro_Metallic.jpg",
+      "Satellite_satellite_Couro_Normal.jpg",
+      "Satellite_satellite_Pinos_BaseColor.jpg",
+      "Satellite_satellite_Pinos_Metallic.jpg",
+      "Satellite_satellite_Pinos_Normal.jpg",
+      "Satellite_satellite_Placas_BaseColor.jpg",
+      "Satellite_satellite_Placas_Metallic.jpg",
+      "Satellite_satellite_Placas_Normal.jpg",
+      "Satellite_satellite_Sat_lite_BaseColor.jpg",
+      "Satellite_satellite_Sat_lite_Metallic.jpg",
+      "Satellite_satellite_Sat_lite_Normal.jpg",
+      "credit.txt"
+  ]
 
 #See resolution_checker.py for the available configurations
 resolution_configuration:
