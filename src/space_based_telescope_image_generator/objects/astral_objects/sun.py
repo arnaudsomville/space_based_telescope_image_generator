@@ -5,8 +5,11 @@ from space_based_telescope_image_generator.objects.astral_objects.astral_object 
     AstralObject,
 )
 from space_based_telescope_image_generator.utils.constants import earth_sun_distance
+import math as m
 import numpy as np
+import datetime
 
+OBLIQUITY = m.radians(-23.45)      # [deg] Obliquity of the Earth about the ecliptic
 
 class Sun(AstralObject):
     """Definition of sun being the lightsource.
@@ -25,14 +28,21 @@ class Sun(AstralObject):
         self.sun = self.get_povray_object()
 
     def get_povray_object(
-        self,
-    ) -> LightSource:  # First dummy modelization. TODO: Change
+        self
+    ) -> LightSource:  # First dummy modelization. TODO: Change (IN PROGRESS)
         """Retrieve the povray object."""
+        ref = datetime.datetime(2025, 3, 10, 9, 1, 0)  # Datetime Vernal equinox of 2025 UTC
+        date = datetime.datetime(2025, 3, 10, 9, 1, 0) # TODO: iterate it so that it takes the date of the simulation
+
+        # Get the difference in seconds
+        seconds_difference = (date - ref).total_seconds()   # [s] Difference between reference date and current date
+        angle = 2*m.pi*seconds_difference/86164             # [rad] Angle between ECI and ECEF reference frames
+
         return LightSource(
             [
-                earth_sun_distance * np.cos(np.deg2rad(self.illumination_angle_deg)),
-                earth_sun_distance * np.sin(np.deg2rad(self.illumination_angle_deg)),
-                0,
+                earth_sun_distance * m.cos(angle),
+                earth_sun_distance * m.cos(OBLIQUITY) * m.sin(angle),
+                earth_sun_distance * m.sin(OBLIQUITY) * m.sin(angle),
             ],
             "color",
             [1, 1, 1],
