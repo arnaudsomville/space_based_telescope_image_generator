@@ -5,6 +5,7 @@ from vapory import Texture, Pigment, Finish, Box, Union
 from space_based_telescope_image_generator.objects.targets.target_object import (
     TargetObject,
 )
+from space_based_telescope_image_generator.processings.propagation import KeplerianModel
 
 
 class PrimitiveCubesat(TargetObject):
@@ -14,7 +15,7 @@ class PrimitiveCubesat(TargetObject):
 
     def __init__(
         self,
-        position: list[float],
+        kepler_dynamic_model: KeplerianModel,
         attitude: list[float],
         size: float = 0.0001,
         thickness: float = 0.00001,
@@ -27,7 +28,7 @@ class PrimitiveCubesat(TargetObject):
         :param size: Taille du CubeSat (cm).
         :param thickness: Épaisseur des faces du CubeSat (cm).
         """
-        super().__init__(position, attitude, ["metals.inc", "textures.inc"])
+        super().__init__(kepler_dynamic_model, attitude, ["metals.inc", "textures.inc"])
         self.size = size
         self.thickness = thickness
         self.cubesat_model = self.get_povray_object()
