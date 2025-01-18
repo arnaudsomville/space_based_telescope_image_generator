@@ -46,7 +46,9 @@ class TargetObject(ABC, POVRayElement):
         """
         return self.attitude
 
-    def propagate_position(self, propagation_time: float, dt_s: float) -> dict[float, tuple[float, float, float]]:
+    def propagate_position(
+        self, propagation_time: float, dt_s: float
+    ) -> list[tuple[float, float, float]]:
         """Propagate the orbite for an amount of time.
 
         Args:
@@ -54,12 +56,13 @@ class TargetObject(ABC, POVRayElement):
             dt_s (float): Delta t between two steps.
 
         Returns:
-            dict[float, tuple[float, float, float]]: Returns a dictionnary associating a timestamp with
-            the positions [km] in EME2000.
+            list[tuple[float, float, float]]: Returns a list of positions [km] in EME2000.
         """
         return self.kepler_dynamic_model.propagate(propagation_time, dt_s)[0]
 
-    def propagate_attitude(self, propagation_time: float, dt_s: float) -> dict[float, float]:
+    def propagate_attitude(
+        self, propagation_time: float, dt_s: float
+    ) -> list[tuple[float, float, float]]:
         """Propagate the orbite for an amount of time.
 
         Args:
@@ -67,12 +70,10 @@ class TargetObject(ABC, POVRayElement):
             dt_s (float): Delta t between two steps.
 
         Returns:
-            dict[float, tuple[float, float, float]]: Returns a dictionnary associating a timestamp with
-            the attitudes [deg] in LVLH.
+            list[tuple[float, float, float]]: Returns a list of attitudes [deg] in LVLH.
 
         """
         raise NotImplementedError("TODO: Implement")
-
 
     @abstractmethod
     def get_povray_object(self):

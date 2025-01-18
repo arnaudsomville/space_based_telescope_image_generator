@@ -24,7 +24,7 @@ class KeplerianModel(BaseModel):
     Omega: float  # Longitude of the Right Ascension of the Ascending Node (rad)
     omega: float  # Argument of perigee (rad)
     nu: float  # True anomaly (rad)
-    epoch: float  # timestamp (s)
+    epoch: float  # timestamp (s) might be useless
 
     @classmethod
     def from_tle(cls, TLE: tuple[str, str] | list[str]) -> "KeplerianModel":
@@ -350,9 +350,7 @@ class KeplerianModel(BaseModel):
 
     def propagate(
         self, propagation_time: float, dt_s: float
-    ) -> tuple[
-        dict[float, tuple[float, float, float]], dict[float, tuple[float, float, float]]
-    ]:
+    ) -> tuple[list[tuple[float, float, float]], list[tuple[float, float, float]]]:
         """Propagate the orbite for an amount of time.
 
         Args:
@@ -360,15 +358,15 @@ class KeplerianModel(BaseModel):
             dt_s (float): Delta t between two steps.
 
         Returns:
-            tuple[dict[float, tuple[float, float, float]], dict[float, tuple[float, float, float]]]: Returns two dictionnaries
-              associating a timestamp with the positions [km]/ instantanate speed [km/s] in EME2000.
+            tuple[list[tuple[float, float, float]], list[tuple[float, float, float]]]: Returns two list
+              with the positions [km]/ instantanate speed [km/s] in EME2000.
         """
         # Initialize arrays to store position and velocity
         pos, vel = self._keplerian2cartesian()
         acc, jerk = self.compute_jerk_and_acc(pos, vel)
 
-        position_dict = {}
-        velocity_dict = {}
+        position_list = []
+        velocity_list = []
         # Main simulation loop
         date = self.epoch
         for _ in range(int(propagation_time / dt_s)):
@@ -382,15 +380,15 @@ class KeplerianModel(BaseModel):
             acc, jerk = self.compute_jerk_and_acc(
                 pos_new, vel_new
             )  # [m/s2, m/s3] New acceleration and jerk vectors
-            position_dict.update(
-                {date: (pos_new[0] / 1000, pos_new[1] / 1000, pos_new[2] / 1000)}
+            position_list.append(
+                (pos_new[0] / 1000, pos_new[1] / 1000, pos_new[2] / 1000)
             )  # [km] Position array
-            velocity_dict.update(
-                {date: (pos_new[0] / 1000, pos_new[1] / 1000, pos_new[2] / 1000)}
+            velocity_list.append(
+                (pos_new[0] / 1000, pos_new[1] / 1000, pos_new[2] / 1000)
             )  # [km/s] Velocity array
             pos = pos_new  # [m] Resetting position vector
             vel = vel_new  # [m/s] Resetting velocity vector
-        return (position_dict, velocity_dict)
+        return (position_list, velocity_list)
 
 
 if __name__ == "__main__":
@@ -406,14 +404,14 @@ if __name__ == "__main__":
     time = DAY_SECONDS * nb_days  # [s] Total time
     dt_s = 5  # [s] Time step of the simulation
 
-    pos_dict, vel_dict = kep.propagate(time, dt_s)
+    pos_list, vel_list = kep.propagate(time, dt_s)
 
     # Convert lists to numpy arrays
     pos_array = np.array(
-        [[pos[0] * 1000, pos[1] * 1000, pos[2] * 1000] for pos in pos_dict.values()]
+        [[pos[0] * 1000, pos[1] * 1000, pos[2] * 1000] for pos in pos_list]
     )
     vel_array = np.array(
-        [[vel[0] * 1000, vel[1] * 1000, vel[2] * 1000] for vel in vel_dict.values()]
+        [[vel[0] * 1000, vel[1] * 1000, vel[2] * 1000] for vel in vel_list]
     )
 
     # Plotting the orbit in 3D

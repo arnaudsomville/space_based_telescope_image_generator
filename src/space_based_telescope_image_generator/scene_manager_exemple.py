@@ -19,9 +19,9 @@ sat_altitude = 5000
 relative_distance_to_satellite = 0.05
 
 TLE_sat = [
-        "1 55044U 23001AM  25005.04515951  .02585999  11606-1  26070-2 0  9995",
-        "2 55044  97.3788  79.4722 0006145 286.1743  73.8866 16.13983607112084",
-    ]
+    "1 55044U 23001AM  25005.04515951  .02585999  11606-1  26070-2 0  9995",
+    "2 55044  97.3788  79.4722 0006145 286.1743  73.8866 16.13983607112084",
+]
 
 # Firstly we define a target
 cubesat = PrimitiveCubesat(
@@ -35,19 +35,19 @@ rusty_sat = RustySatellite(
     kepler_dynamic_model=KeplerianModel.from_tle(TLE_sat),
     attitude=[45, 45, 45],  # Permits to rotate the satellite
 )
-rusty_sat.position =[
-        earth_radius + sat_altitude - relative_distance_to_satellite,
-        relative_distance_to_satellite,
-        0,
-    ] # Easier for the example, orbit are mainly for propagation purpose.
+rusty_sat.position = [
+    earth_radius + sat_altitude - relative_distance_to_satellite,
+    relative_distance_to_satellite,
+    0,
+]  # Easier for the example, orbit are mainly for propagation purpose.
 
 # Then we define a Satellite (our camera)
 camera_fov = 60
 camera_resolution = (1920, 1080)
 TLE_track = [
-        "1 55044U 23001AM  25005.04515951  .02585999  11606-1  26070-2 0  9995",
-        "2 55044  97.3788  79.4722 0006145 286.1743  73.8866 16.13983607112084",
-    ]
+    "1 55044U 23001AM  25005.04515951  .02585999  11606-1  26070-2 0  9995",
+    "2 55044  97.3788  79.4722 0006145 286.1743  73.8866 16.13983607112084",
+]
 
 satellite = TrackingSatellite(
     kepler_dynamic_model=KeplerianModel.from_tle(TLE_track),
@@ -55,7 +55,7 @@ satellite = TrackingSatellite(
     image_height=camera_resolution[1],
     image_width=camera_resolution[0],
 )
-satellite.position = [earth_radius + sat_altitude, 0, 0] #E
+satellite.position = [earth_radius + sat_altitude, 0, 0]  # E
 satellite.target_pointing(
     cubesat.get_position()
 )  # We explicitely say that the satellite has to point to the target
