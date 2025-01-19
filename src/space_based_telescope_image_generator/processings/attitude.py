@@ -33,7 +33,7 @@ class AttitudeDynamicModel(ABC):
         attitudes: list[tuple[float,float,float]] = []
         last_pos = self.init_pos
         for vel in vel_profile:
-            attitude_n = last_pos + np.array(vel)/dt_s
+            attitude_n = last_pos + np.array(vel)*dt_s
             attitudes.append(
                 (
                     attitude_n[0] % 360,

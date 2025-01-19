@@ -34,7 +34,7 @@ rusty_sat = RustySatellite(
 
 # Then we define a Satellite (our camera)
 camera_fov = 20
-camera_resolution = (1920, 1080)
+camera_resolution = (1280, 720)
 
 satellite = TrackingSatellite(
     kepler_dynamic_model=KeplerianModel.from_pvt(
@@ -62,7 +62,7 @@ satellite.target_pointing(
 scene_manager = SceneManager(target=rusty_sat, satellite=satellite, sun_direction_deg=0)
 
 scene_manager.render_video(
-    framerate=1,
-    duration_s=5,
+    framerate=15,
+    duration_s=10,
     output_folder=Path.home().joinpath("exemple_video")
 )
