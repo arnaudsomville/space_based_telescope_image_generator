@@ -6,6 +6,7 @@ from vapory import POVRayElement, Camera
 from space_based_telescope_image_generator.objects.targets.target_object import (
     TargetObject,
 )
+from space_based_telescope_image_generator.processings.propagation import KeplerianModel
 
 
 class TrackingSatellite(POVRayElement):
@@ -13,7 +14,7 @@ class TrackingSatellite(POVRayElement):
 
     def __init__(
         self,
-        position: list[float],
+        kepler_dynamic_model: KeplerianModel,
         fov: float = 60.0,
         image_width: int = 1920,
         image_height: int = 1080,
@@ -24,7 +25,8 @@ class TrackingSatellite(POVRayElement):
             position (list[float]): Position vector in km.
         """
         self.additional_includes: list[str] = []
-        self.position: list[float] = position
+        self.kepler_dynamic_model = kepler_dynamic_model
+        self.position: list[float] = kepler_dynamic_model.keplerian2cartesian()[0]
         self.pointing: list[float] = [0, 0, 0]  # NADIR pointing by default
         self.fov: float = fov
         self.image_width = image_width
@@ -75,3 +77,17 @@ class TrackingSatellite(POVRayElement):
             + (self.position[1] - target.position[1]) ** 2
             + (self.position[2] - target.position[2]) ** 2
         )
+
+    def propagate_position(
+        self, propagation_time: float, dt_s: float
+    ) -> list[tuple[float, float, float]]:
+        """Propagate the orbite for an amount of time.
+
+        Args:
+            propagation_time (float): Amount of seconds to propagate.
+            dt_s (float): Delta t between two steps.
+
+        Returns:
+            list[tuple[float, float, float]]: Returns a list of positions [km] in EME2000.
+        """
+        return self.kepler_dynamic_model.propagate(propagation_time, dt_s)[0]

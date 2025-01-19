@@ -5,6 +5,8 @@ from vapory import Texture, Pigment, Finish, Box, Union
 from space_based_telescope_image_generator.objects.targets.target_object import (
     TargetObject,
 )
+from space_based_telescope_image_generator.processings.attitude import AttitudeDynamicModel
+from space_based_telescope_image_generator.processings.propagation import KeplerianModel
 
 
 class PrimitiveCubesat(TargetObject):
@@ -14,20 +16,20 @@ class PrimitiveCubesat(TargetObject):
 
     def __init__(
         self,
-        position: list[float],
-        attitude: list[float],
+        kepler_dynamic_model: KeplerianModel,
+        attitude_model: AttitudeDynamicModel,
         size: float = 0.0001,
         thickness: float = 0.00001,
     ) -> None:
         """
         Constructeur de la classe PrimitiveCubesat.
 
-        :param position: Position absolue du CubeSat [x, y, z].
-        :param attitude: Rotation du CubeSat sur les axes [x, y, z] (en degrés).
+        :param kepler_dynamic_model: (KeplerianModel): Orbital Dynamic of the satellite.
+        :param attitude_model: (AttitudeDynamicModel): Attitude dynamic of the satellite.
         :param size: Taille du CubeSat (cm).
         :param thickness: Épaisseur des faces du CubeSat (cm).
         """
-        super().__init__(position, attitude, ["metals.inc", "textures.inc"])
+        super().__init__(kepler_dynamic_model, attitude_model, ["metals.inc", "textures.inc"])
         self.size = size
         self.thickness = thickness
         self.cubesat_model = self.get_povray_object()

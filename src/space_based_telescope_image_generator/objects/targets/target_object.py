@@ -4,27 +4,32 @@ from vapory import POVRayElement
 
 from abc import ABC, abstractmethod
 
+from space_based_telescope_image_generator.processings.attitude import AttitudeDynamicModel
+from space_based_telescope_image_generator.processings.propagation import KeplerianModel
+
 
 class TargetObject(ABC, POVRayElement):
     """Base for targets."""
 
     def __init__(
         self,
-        position: list[float],
-        attitude: list[float],
+        kepler_dynamic_model: KeplerianModel,
+        attitude_model: AttitudeDynamicModel,
         additional_includes: list[str] = [],
     ) -> None:
         """_summary_
 
         Args:
-            position (list[float]): Position vector in km.
-            rotation (list[float]): Rotation vector of the object in degree.
+            kepler_dynamic_model (KeplerianModel): Orbital Dynamic of the satellite.
+            attitude_model (AttitudeDynamicModel): Attitude dynamic of the satellite.
             additional_includes: list[str]: Important includes.
 
         """
         super().__init__()
-        self.position = position
-        self.attitude = attitude
+        self.kepler_dynamic_model = kepler_dynamic_model
+        self.position = kepler_dynamic_model.keplerian2cartesian()[0]
+        self.attitude_model = attitude_model
+        self.attitude = attitude_model.init_pos
         self.additional_includes = additional_includes
 
     def get_position(self) -> list[float]:
@@ -42,6 +47,35 @@ class TargetObject(ABC, POVRayElement):
             list[float]: attitude.
         """
         return self.attitude
+
+    def propagate_position(
+        self, propagation_time: float, dt_s: float
+    ) -> list[tuple[float, float, float]]:
+        """Propagate the orbite for an amount of time.
+
+        Args:
+            propagation_time (float): Amount of seconds to propagate.
+            dt_s (float): Delta t between two steps.
+
+        Returns:
+            list[tuple[float, float, float]]: Returns a list of positions [km] in EME2000.
+        """
+        return self.kepler_dynamic_model.propagate(propagation_time, dt_s)[0]
+
+    def propagate_attitude(
+        self, propagation_time: float, dt_s: float
+    ) -> list[tuple[float, float, float]]:
+        """Propagate the orbite for an amount of time.
+
+        Args:
+            propagation_time (float): Amount of seconds to propagate.
+            dt_s (float): Delta t between two steps.
+
+        Returns:
+            list[tuple[float, float, float]]: Returns a list of attitudes [deg] in LVLH.
+
+        """
+        return self.attitude_model.propagate(propagation_time,dt_s)
 
     @abstractmethod
     def get_povray_object(self):
