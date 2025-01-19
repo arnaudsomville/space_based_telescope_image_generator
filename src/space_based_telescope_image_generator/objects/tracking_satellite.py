@@ -77,3 +77,17 @@ class TrackingSatellite(POVRayElement):
             + (self.position[1] - target.position[1]) ** 2
             + (self.position[2] - target.position[2]) ** 2
         )
+
+    def propagate_position(
+        self, propagation_time: float, dt_s: float
+    ) -> list[tuple[float, float, float]]:
+        """Propagate the orbite for an amount of time.
+
+        Args:
+            propagation_time (float): Amount of seconds to propagate.
+            dt_s (float): Delta t between two steps.
+
+        Returns:
+            list[tuple[float, float, float]]: Returns a list of positions [km] in EME2000.
+        """
+        return self.kepler_dynamic_model.propagate(propagation_time, dt_s)[0]

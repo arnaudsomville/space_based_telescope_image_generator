@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 from pydantic import BaseModel
 
 from space_based_telescope_image_generator.utils.constants import (
-    DAY_SECONDS,
     J2,
     MU,
     PI,
@@ -90,8 +89,8 @@ class KeplerianModel(BaseModel):
             OrbitalParameters: Instance with the calculated Keplerian elements.
         """
         # Convert tuples to numpy arrays for easier computation
-        pos = np.array(position)
-        vel = np.array(velocity)
+        pos = np.array(position) * 1e3
+        vel = np.array(velocity) * 1e3
 
         # Magnitudes of position and velocity
         r = np.linalg.norm(pos)  # [km]
@@ -134,13 +133,13 @@ class KeplerianModel(BaseModel):
 
         # Return an instance of OrbitalParameters
         return cls(
-            a=a * 1000,  # Convert to meters
+            a=a,  # Convert to meters
             e=e,
             i=i,
             Omega=Omega,
             omega=omega,
             nu=nu,
-            epoch=int(epoch.timestamp()),  # Convert datetime to timestamp (seconds)
+            epoch=epoch.timestamp(),  # Convert datetime to timestamp (seconds)
         )
 
     @classmethod
@@ -390,6 +389,47 @@ class KeplerianModel(BaseModel):
             vel = vel_new  # [m/s] Resetting velocity vector
         return (position_list, velocity_list)
 
+    def plot_orbit(self, pos_array: NDArray, dt_s: float)->None:
+        """Plot orbit, for debug purpose.
+
+        Args:
+            pos_array (NDArray): Array containing sat positions.
+            dt_s (float): detla t between position in seconds.
+
+        """
+        # Plotting the orbit in 3D
+        fig2 = plt.figure()
+        plt.title("Orbit in ECI")
+
+        # Creating a wireframe for the Earth
+        phi = np.linspace(0, 2 * m.pi, 36)  # Angular meshing
+        theta = np.linspace(0, m.pi, 18)  # Angular meshing
+        A, B = np.meshgrid(theta, phi)
+        X = RE * np.sin(A) * np.cos(B)  # X coordinates
+        Y = RE * np.sin(A) * np.sin(B)  # Y coordinates
+        Z = RE * np.cos(A)  # Z coordinates
+
+        # Plotting the Earth and the trajectory
+        eci = fig2.add_subplot(111, projection="3d")
+        # Sphere
+        eci.plot_wireframe(X, Y, Z, color="c", zorder=1, alpha=0.25)  # type: ignore
+        # Trajectory
+        eci.plot3D(pos_array[:, 0], pos_array[:, 1], pos_array[:, 2], color="m")  # type: ignore
+
+        # Plotting the ECI coordinates in 2D
+        plt.figure()
+        # X_ECI
+        plt.plot(pos_array[:, 0], color="r")  # type: ignore
+        # Y_ECI
+        plt.plot(pos_array[:, 1], color="g")  # type: ignore
+        # Z_ECI
+        plt.plot(pos_array[:, 2], color="b")  # type: ignore
+        plt.grid()
+        plt.legend(["$X_{ECI}$", "$Y_{ECI}$", "$Z_{ECI}$"])
+        plt.title("Coordinates in ECI of the satellite versus time")
+        plt.xlabel(f"Time, one step = {dt_s} sec")
+        plt.ylabel("ECI coordinates in m")
+        plt.show()
 
 if __name__ == "__main__":
     TLE = [
@@ -397,11 +437,25 @@ if __name__ == "__main__":
         "2 55044  97.3788  79.4722 0006145 286.1743  73.8866 16.13983607112084",
     ]
 
-    kep = KeplerianModel.from_tle(TLE)
+    # kep = KeplerianModel.from_tle(TLE)
+
+    kep=KeplerianModel.from_pvt(
+        position=[
+            7000,
+            0,
+            0
+        ],
+        velocity=[
+            0,
+            8,
+            0
+        ],
+        epoch=datetime.now()
+    )
+    print(kep)
 
     # Simulation parameters
-    nb_days = 1  # [day] Number of days of propagation
-    time = DAY_SECONDS * nb_days  # [s] Total time
+    time = 3600  # [s] Total time
     dt_s = 5  # [s] Time step of the simulation
 
     pos_list, vel_list = kep.propagate(time, dt_s)
@@ -410,40 +464,6 @@ if __name__ == "__main__":
     pos_array = np.array(
         [[pos[0] * 1000, pos[1] * 1000, pos[2] * 1000] for pos in pos_list]
     )
-    vel_array = np.array(
-        [[vel[0] * 1000, vel[1] * 1000, vel[2] * 1000] for vel in vel_list]
-    )
+    kep.plot_orbit(pos_array, dt_s)
 
-    # Plotting the orbit in 3D
-    fig2 = plt.figure()
-    plt.title("Orbit in ECI")
-
-    # Creating a wireframe for the Earth
-    phi = np.linspace(0, 2 * m.pi, 36)  # Angular meshing
-    theta = np.linspace(0, m.pi, 18)  # Angular meshing
-    A, B = np.meshgrid(theta, phi)
-    X = RE * np.sin(A) * np.cos(B)  # X coordinates
-    Y = RE * np.sin(A) * np.sin(B)  # Y coordinates
-    Z = RE * np.cos(A)  # Z coordinates
-
-    # Plotting the Earth and the trajectory
-    eci = fig2.add_subplot(111, projection="3d")
-    # Sphere
-    eci.plot_wireframe(X, Y, Z, color="c", zorder=1, alpha=0.25)  # type: ignore
-    # Trajectory
-    eci.plot3D(pos_array[:, 0], pos_array[:, 1], pos_array[:, 2], color="m")  # type: ignore
-
-    # Plotting the ECI coordinates in 2D
-    plt.figure()
-    # X_ECI
-    plt.plot(pos_array[:, 0], color="r")  # type: ignore
-    # Y_ECI
-    plt.plot(pos_array[:, 1], color="g")  # type: ignore
-    # Z_ECI
-    plt.plot(pos_array[:, 2], color="b")  # type: ignore
-    plt.grid()
-    plt.legend(["$X_{ECI}$", "$Y_{ECI}$", "$Z_{ECI}$"])
-    plt.title("Coordinates in ECI of the satellite versus time")
-    plt.xlabel(f"Time, one step = {dt_s} sec")
-    plt.ylabel("ECI coordinates in m")
-    plt.show()
+    

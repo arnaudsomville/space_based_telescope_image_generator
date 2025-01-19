@@ -15,3 +15,5 @@ J2 = 1082.62668e-6  # [-] Perturbation constant from gravitational potential
 RE = 6378.137e3  # [m] Equatorial radius of the Earth
 DAY_SECONDS = 86400  # [s] Seconds in a solar day
 PI = m.pi  # Pi
+
+OBLIQUITY = m.radians(-23.45)  # [deg] Obliquity of the Earth about the ecliptic

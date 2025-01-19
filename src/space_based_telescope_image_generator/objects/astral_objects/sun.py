@@ -4,11 +4,10 @@ from vapory import LightSource
 from space_based_telescope_image_generator.objects.astral_objects.astral_object import (
     AstralObject,
 )
-from space_based_telescope_image_generator.utils.constants import earth_sun_distance
+from space_based_telescope_image_generator.utils.constants import OBLIQUITY, earth_sun_distance
 import math as m
 import datetime
 
-OBLIQUITY = m.radians(-23.45)  # [deg] Obliquity of the Earth about the ecliptic
 
 
 class Sun(AstralObject):

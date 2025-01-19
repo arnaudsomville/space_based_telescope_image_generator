@@ -1,6 +1,7 @@
 """Manage the scene definition and image generation."""
 
 from pathlib import Path
+from PIL import Image
 from typing import Union
 from space_based_telescope_image_generator.objects.astral_objects.astral_object import (
     AstralObject,
@@ -138,16 +139,56 @@ class SceneManager:
         """Render a video.
 
         Args:
-            framerate (int): Video Framerate.
-            duration_s (int): _description_
-            output_folder (Path): _description_
+            framerate (int): Image per seconds (can be < 0).
+            duration_s (int): Total video duration.
+            output_folder (Path): Path to the output folder.
 
         Returns:
             Path: _description_
         """
-        # Should be an image generation loop which, at each step will :
-        # - Update target and satellite position using their set_position method TODO: Implement Orbital Mechanic + Propagation
-        # - Update their attitude using self.target.set_attitude and self.satellite.set_target(self.target) TODO: Implement a methode for rotation propagation ?
-        # - Generate a new image in the output folder with an incremented name
-        # At the end all the generated images should be concatenated in a video / gif
-        raise NotImplementedError("TODO: Implement")
+        delta_t = 1/framerate
+        step_images_folder = output_folder.joinpath("steps")
+        step_images_folder.mkdir(parents=True, exist_ok=True)
+
+        # Orbital Propagations
+        target_positions = self.target.propagate_position(duration_s, delta_t)
+        sat_positions = self.satellite.propagate_position(duration_s, delta_t)
+
+        #Attitude propagation
+        target_attitudes = self.target.propagate_attitude(duration_s, delta_t)
+
+        #TODO: Add astral propagation
+
+        image_list: list[Path] = []
+
+        for step_i, (sat_pos, target_pos, target_att) in enumerate(zip(sat_positions, target_positions, target_attitudes)):
+            print(f"Generating image {step_i + 1} out of {len(target_positions)}")
+            # Set satellite position & attitude
+            self.satellite.position = sat_pos
+            self.satellite.target_pointing(target_pos)
+            
+            # Set target position & attitude
+            self.target.position = target_pos
+            self.target.attitude = target_att
+
+            #Render image
+            image_path = step_images_folder.joinpath(f"image_{step_i + 1}.png")
+            image_list.append(image_path)
+            self.render_image(
+                ouput_image_path=image_path
+            )
+        
+
+        # Open images and store them as a list of PIL Image objects
+        frames = [Image.open(image) for image in image_list]
+
+        # Save as a GIF
+        gif_path = output_folder.joinpath("rendered_video.gif")
+        frames[0].save(
+            gif_path,
+            save_all=True,
+            append_images=frames[1:],
+            duration=int(delta_t*1000),
+            loop=0
+        )
+        return gif_path
